@@ -5,6 +5,7 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import distributed.msg.DiscoverNewPeer;
 import distributed.msg.Greeting;
+import java.util.concurrent.TimeUnit;
 
 import java.util.ArrayList;
 
@@ -14,30 +15,8 @@ public class Peer extends AbstractActor {
         return Props.create(Peer.class, () -> new Peer(message));
     }
 
-//    //#greeter-messages
-//    static public class DiscoverNewPeer {
-//        public DiscoverNewPeer() {
-//        }
-//    }
-
-    static public class Greet {
-        public final String message;
-        public Greet(String message) {
-            this.message = message;
-        }
-    }
-
-    static public class Broadcast {
-        public final String message;
-        public Broadcast(String message) {
-            this.message = message;
-        }
-    }
-    //#greeter-messages
-
     private final String peerName;
     private final ArrayList<ActorRef> peers = new ArrayList<ActorRef>();
-    private String greeting = "";
 
     public Peer(String message) {
         this.peerName = message;
@@ -51,14 +30,10 @@ public class Peer extends AbstractActor {
                     this.peers.add(getSender());
                     getSender().tell(new Greeting("Hello!"), getSelf());
                 })
-                .match(Broadcast.class, msg -> {
-                    for (ActorRef ref: this.peers) {
-                        System.out.println(this.peerName+"> I am sending a message to: "+ref+" -> "+msg.message);
-                        ref.tell(new Greeting(msg.message), getSelf());
-                    }
-                })
                 .match(Greeting.class, msg -> {
                     System.out.println(this.peerName+"> "+getSender()+" told me '"+msg.message+"'");
+                    TimeUnit.SECONDS.sleep(1);
+                    getSender().tell(new Greeting("Hello again!"), getSelf());
                 })
                 .build();
     }
