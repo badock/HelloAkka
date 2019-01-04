@@ -1,4 +1,4 @@
-package distributed.config;
+package distributed.ring.config;
 
 /**
  * Created by jonathan on 11/21/18.

@@ -1,14 +1,12 @@
-package distributed;
+package distributed.simple;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.Config;
-import distributed.config.ConfigurationGenerator;
-import distributed.msg.DiscoverNewPeer;
-
-import java.io.Serializable;
+import distributed.simple.config.ConfigurationGenerator;
+import distributed.simple.msg.DiscoverNewPeer;
 
 /**
  * Created by jonathan on 11/21/18.

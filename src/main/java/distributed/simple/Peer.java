@@ -1,10 +1,10 @@
-package distributed;
+package distributed.simple;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import distributed.msg.DiscoverNewPeer;
-import distributed.msg.Greeting;
+import distributed.simple.msg.DiscoverNewPeer;
+import distributed.simple.msg.Greeting;
 import java.util.concurrent.TimeUnit;
 
 import java.util.ArrayList;
@@ -18,8 +18,8 @@ public class Peer extends AbstractActor {
     private final String peerName;
     private final ArrayList<ActorRef> peers = new ArrayList<ActorRef>();
 
-    public Peer(String message) {
-        this.peerName = message;
+    public Peer(String name) {
+        this.peerName = name;
     }
 
     @Override

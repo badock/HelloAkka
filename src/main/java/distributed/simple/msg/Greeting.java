@@ -1,4 +1,4 @@
-package distributed.msg;
+package distributed.simple.msg;
 
 import java.io.Serializable;
 
