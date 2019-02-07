@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Test {
     public static void main(String[] args) {
-        System.out.println("Testing with many peers");
+        System.out.println("Running a distributed application based on a master/slave topology");
         // Create server
         int server_port = 9000;
         String[] server_args = new String[]{"server", "127.0.0.1", Integer.toString(server_port)};

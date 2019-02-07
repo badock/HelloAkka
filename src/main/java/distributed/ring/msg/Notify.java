@@ -1,6 +1,6 @@
 package distributed.ring.msg;
 
-import distributed.ring.util.ActorRefWithId;
+import distributed.utils.ActorRefWithId;
 
 import java.io.Serializable;
 

@@ -7,7 +7,7 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import distributed.ring.config.ConfigurationGenerator;
 import distributed.ring.msg.IWantToJoin;
-import distributed.ring.util.Utils;
+import distributed.utils.Utils;
 
 import java.math.BigInteger;
 
@@ -85,10 +85,6 @@ public class Main {
     }
 
     public static void main(String[] args) {
-//        String[] args1 = new String[2];
-//        args1[0] = "server";
-//        args1[1] = "1234";
-//        args = args1;
         if (args.length == 3 && args[0].equals("server")) {
             server(args);
         } else if (args.length == 5 && args[0].equals("client")) {

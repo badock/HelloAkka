@@ -7,6 +7,9 @@ import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.Config;
 import distributed.simple.config.ConfigurationGenerator;
 import distributed.simple.msg.DiscoverNewPeer;
+import distributed.utils.Utils;
+
+import java.math.BigInteger;
 
 /**
  * Created by jonathan on 11/21/18.
@@ -18,7 +21,9 @@ public class Main {
         System.out.println("Launching client");
 
         // make a Config with just your special setting
-        Config myConfig = ConfigFactory.parseString(ConfigurationGenerator.generateConfig(args[1], args[2]));
+        String address = args[1];
+        String port = args[2];
+        Config myConfig = ConfigFactory.parseString(ConfigurationGenerator.generateConfig(address, port));
 
         // load the normal config stack (system props, then application.conf, then reference.conf)
         Config regularConfig = ConfigFactory.load();
@@ -29,19 +34,25 @@ public class Main {
         // put the result in between the overrides (system props) and defaults again
         Config complete = ConfigFactory.load(combined);
 
-        // create ActorSystem
-        final ActorSystem system = ActorSystem.create("hello_akka", complete);
-
-        final ActorRef greeter1 =
-                system.actorOf(Peer.props("greeter2>"), "greeter2");
-
         String remote_address = args[3];
         String remote_port = args[4];
 
-        ActorSelection selection =
-                system.actorSelection("akka.tcp://hello_akka@"+remote_address+":"+remote_port+"/user/greeter1");
+        // create ActorSystem
+        final ActorSystem system = ActorSystem.create("hello_akka", complete);
 
-        selection.tell(new DiscoverNewPeer(), greeter1);
+        try {
+            final BigInteger actorId = Utils.addressToUniqueIntegerIdentifer(address+"_"+port);
+            final ActorRef slave =
+                system.actorOf(Peer.props(actorId.toString()), actorId.toString());
+
+            ActorSelection selection =
+                    system.actorSelection("akka.tcp://hello_akka@"+remote_address+":"+remote_port+"/user/master");
+
+            selection.tell(new DiscoverNewPeer(), slave);
+
+        } catch (java.security.NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void server(String[] args) {
@@ -64,15 +75,18 @@ public class Main {
         // create ActorSystem
         final ActorSystem system = ActorSystem.create("hello_akka", complete);
 
-        final ActorRef greeter1 =
-                system.actorOf(Peer.props("greeter1>"), "greeter1");
+
+        try {
+            final BigInteger actorId = Utils.addressToUniqueIntegerIdentifer(address+"_"+port);
+            final ActorRef master =
+                    system.actorOf(Peer.props(actorId.toString()), "master");
+
+        } catch (java.security.NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
-//        String[] args1 = new String[2];
-//        args1[0] = "server";
-//        args1[1] = "1234";
-//        args = args1;
         if (args.length == 3 && args[0].equals("server")) {
             server(args);
         } else if (args.length == 5 && args[0].equals("client")) {

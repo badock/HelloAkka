@@ -1,7 +1,7 @@
 package distributed.ring.fingers;
 
-import distributed.ring.util.ActorRefWithId;
-import distributed.ring.util.Utils;
+import distributed.utils.ActorRefWithId;
+import distributed.utils.Utils;
 
 import java.math.BigInteger;
 

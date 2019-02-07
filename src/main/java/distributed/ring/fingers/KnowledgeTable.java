@@ -1,7 +1,7 @@
 package distributed.ring.fingers;
 
-import distributed.ring.util.ActorRefWithId;
-import distributed.ring.util.Utils;
+import distributed.utils.ActorRefWithId;
+import distributed.utils.Utils;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -9,14 +9,14 @@ import java.util.ArrayList;
 /**
  * Created by jonathan on 12/1/18.
  */
-public class FingersTable {
+public class KnowledgeTable {
 
     private ActorRefWithId selfRef;
     private ActorRefWithId predecessor;
     private ActorRefWithId successor;
 
 
-    public FingersTable(ActorRefWithId selfRef) {
+    public KnowledgeTable(ActorRefWithId selfRef) {
         // Init attributes
         this.selfRef = selfRef;
         this.predecessor = selfRef;

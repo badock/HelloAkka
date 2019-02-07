@@ -5,11 +5,11 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.dispatch.Futures;
 import akka.util.Timeout;
-import distributed.ring.fingers.Finger;
-import distributed.ring.fingers.FingersTable;
+import distributed.ring.fingers.KnowledgeTable;
 import distributed.ring.msg.*;
-import distributed.ring.util.ActorRefWithId;
-import distributed.ring.util.Utils;
+import distributed.utils.ActorRefWithId;
+import distributed.utils.Utils;
+import distributed.utils.LoggingService;
 import scala.compat.java8.FutureConverters;
 import scala.concurrent.ExecutionContext;
 import scala.concurrent.Future;
@@ -29,7 +29,7 @@ public class Peer extends AbstractActor {
         return Props.create(Peer.class, () -> new Peer(message));
     }
 
-    private final FingersTable fingers;
+    private final KnowledgeTable fingers;
     private final ActorRefWithId selfRef;
 
     private Timeout timeout;
@@ -39,7 +39,7 @@ public class Peer extends AbstractActor {
         timeout = Timeout.create(Duration.ofSeconds(5));
 
         // Init fingers
-        this.fingers = new FingersTable(selfRef);
+        this.fingers = new KnowledgeTable(selfRef);
 
         // Schedule periodical events
         Peer selfReference = this;
@@ -57,15 +57,23 @@ public class Peer extends AbstractActor {
     }
 
     public void debug() {
-        String msg = ("=== DEBUG: " + this.selfRef.Id+"\n");
+        String msg = "";
+        ArrayList<BigInteger> identifiers = new ArrayList<BigInteger>();
 
-        msg += "                                                            -- ";
-        msg += "pred:  "+this.fingers.getPredecessor().Id;
-        msg += "\n";
-        msg += "                                                            -- ";
-        msg += "succ:  "+this.fingers.getSuccessor().Id;
+        if (fingers.getPredecessor() != null && !identifiers.contains(fingers.getPredecessor().Id)) {
+            identifiers.add(fingers.getPredecessor().Id);
+        }
 
-        System.out.println(msg);
+        if (fingers.getSuccessor() != null && !identifiers.contains(fingers.getSuccessor().Id)) {
+            identifiers.add(fingers.getSuccessor().Id);
+        }
+
+        for (BigInteger i : identifiers) {
+            msg += "  "+this.selfRef.Id+ " -> " + i + ";\n";
+        }
+
+        LoggingService.setTopology("ring");
+        LoggingService.updatePeerDescription(""+this.selfRef.Id, msg);
     }
 
     public void join(ActorRefWithId nodeRef) {

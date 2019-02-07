@@ -1,6 +1,8 @@
 ## Project specific
 logs
+topology.txt
 events
+.sass-cache
 
 ## JAVA specific
 *.class

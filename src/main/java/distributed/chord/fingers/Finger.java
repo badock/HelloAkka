@@ -1,8 +1,8 @@
 package distributed.chord.fingers;
 
 import akka.actor.ActorRef;
-import distributed.chord.util.ActorRefWithId;
-import distributed.chord.util.Utils;
+import distributed.utils.ActorRefWithId;
+import distributed.utils.Utils;
 
 import java.math.BigInteger;
 

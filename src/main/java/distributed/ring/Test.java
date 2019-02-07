@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Test {
     public static void main(String[] args) {
-        System.out.println("Testing with many peers");
+        System.out.println("Running a distributed application based on a ring topology");
 
         // Create server
         int server_port = 9000;
@@ -16,7 +16,7 @@ public class Test {
         Main.server(server_args);
 
         // Create few clients
-        int nbClients = 20;
+        int nbClients = 25;
         for(int i=1; i<nbClients+1; i++) {
             int client_port = server_port + i;
             String[] client_args = new String[]{"client", "127.0.0.1", Integer.toString(client_port), "127.0.0.1", Integer.toString(server_port)};

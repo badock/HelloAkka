@@ -1,4 +1,4 @@
-package distributed.chord.util;
+package distributed.utils;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

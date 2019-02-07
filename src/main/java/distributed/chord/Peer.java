@@ -7,8 +7,9 @@ import akka.dispatch.Futures;
 import distributed.chord.fingers.Finger;
 import distributed.chord.fingers.FingersTable;
 import distributed.chord.msg.*;
-import distributed.chord.util.ActorRefWithId;
-import distributed.chord.util.Utils;
+import distributed.utils.ActorRefWithId;
+import distributed.utils.Utils;
+import distributed.utils.LoggingService;
 import scala.compat.java8.FutureConverters;
 import scala.concurrent.ExecutionContext;
 import scala.concurrent.Future;
@@ -61,8 +62,9 @@ public class Peer extends AbstractActor {
     }
 
     public void debug() {
-        String msg = ("=== DEBUG: " + this.selfRef.Id + " -- fings: ");
+        String msg = "";
         ArrayList<BigInteger> identifiers = new ArrayList<BigInteger>();
+
         for (Finger f : this.fingers.fingers) {
             if (f.getNode() != null) {
                 if (!identifiers.contains(f.getNode().Id)) {
@@ -71,16 +73,16 @@ public class Peer extends AbstractActor {
             }
         }
 
-        msg += identifiers.size()+"";
+        if (fingers.getPredecessor() != null && !identifiers.contains(fingers.getPredecessor().Id)) {
+            identifiers.add(fingers.getPredecessor().Id);
+        }
 
-        msg += "\n";
-        msg += "                                                            -- ";
-        msg += "pred:  "+this.fingers.getPredecessor().Id;
-        msg += "\n";
-        msg += "                                                            -- ";
-        msg += "succ:  "+this.fingers.getSuccessor().Id;
+        for (BigInteger i : identifiers) {
+            msg += "  "+this.selfRef.Id+ " -> " + i + ";\n";
+        }
 
-        System.out.println(msg);
+        LoggingService.setTopology("ring");
+        LoggingService.updatePeerDescription(""+this.selfRef.Id, msg);
     }
 
     public void join(ActorRefWithId nodeRef) {

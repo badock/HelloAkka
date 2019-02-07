@@ -1,6 +1,6 @@
 package distributed.chord.msg;
 
-import distributed.chord.util.ActorRefWithId;
+import distributed.utils.ActorRefWithId;
 
 import java.io.Serializable;
 
