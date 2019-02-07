@@ -1,8 +1,8 @@
-const version = '20190207014059';
+const version = '20190207173646';
 const cacheName = `static::${version}`;
 
 const buildContentBlob = () => {
-  return ["/jekyll/update/2018/11/13/welcome-to-jekyll.html","/","/session0.html","/session1.html","/session2.html","/session3.html","/session4.html","/manifest.json","/assets/search.json","/assets/styles.css","/redirects.json","/sitemap.xml","/robots.txt","/feed.xml","/assets/img/logo_small.png", "/assets/default-offline-image.png", "/assets/scripts/fetch.js"
+  return ["/jekyll/update/2018/11/13/welcome-to-jekyll.html","/","/session0.html","/manifest.json","/assets/search.json","/assets/styles.css","/redirects.json","/sitemap.xml","/robots.txt","/feed.xml","/assets/img/logo_small.png", "/assets/default-offline-image.png", "/assets/scripts/fetch.js"
   ]
 }
 
