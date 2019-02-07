@@ -1,6 +1,7 @@
 ## Project specific
 logs
 events
+topology.txt
 
 ## JAVA specific
 *.class
