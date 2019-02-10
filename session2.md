@@ -51,10 +51,10 @@ First, we need to define the protocol used by actors to communicate with each ot
 2. _Greeting_: is a message that contains a value (such as "hello" or
    "hello again"). Master and slaves can rely on this class to
    exchange messages, such as when [the master contact a new
-   slave](https://github.com/badock/HelloAkka/blob/master/src/main/java/distributed/simple/Peer.java#L63)
+   slave](https://github.com/badock/HelloAkka/blob/master/src/main/java/distributed/simple/Peer.java#L59)
    and when [a master or a slave reply respectively to a slave or to
    the
-   master](https://github.com/badock/HelloAkka/blob/master/src/main/java/distributed/simple/Peer.java#L68)
+   master](https://github.com/badock/HelloAkka/blob/master/src/main/java/distributed/simple/Peer.java#L64)
 
 In order to implement this distributed system, the master will need to remember who are the peer that have established a contact with him. We implement this beahavior by adding a list of peers to the master:
 
