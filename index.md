@@ -29,11 +29,12 @@ order: 1
 
 ### Outline
 
-- Session 0: Installation of the development environment and getting started
-- Session 1: Developing a simple master/slave application
-- Session 2: Towards a Ring topology
-- Session 3: Implementing a Chord like topology
-- Session 4: Running an application on Grid'5000
+- Session 0: Developping with Akka: getting started
+- Session 1: Akka, an implementation of the actor model
+- Session 2: Developing a simple master/slave application
+- Session 4: Towards a Ring topology
+- Session 4: Implementing a Chord like topology
+- Session 5: Running an application on Grid'5000
 
 ### Contact
 

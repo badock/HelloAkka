@@ -3,6 +3,11 @@ logs
 events
 topology.txt
 
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
 ## JAVA specific
 *.class
 # Package Files #
