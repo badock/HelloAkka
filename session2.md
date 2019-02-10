@@ -151,6 +151,42 @@ This simple example can be run with IntelliJ by running the [distributed.simple.
 
 ##### Main, Test, Peer : explanation on how to bootstrap the distributed system
 
+In order to facilitate users to get started with this example, we
+provide three classes in the __distributed.simple__ package:
+
+1. [_Peer_](https://github.com/badock/HelloAkka/blob/master/src/main/java/distributed/simple/Peer.java): this class contains the code executed by each peer of
+   the distributed system.
+2. [_Main_](https://github.com/badock/HelloAkka/blob/master/src/main/java/distributed/simple/Main.java): this class instantiates one actor base on the previous
+   _Peer_ class. This class contains a _main_ method that takes few
+   arguments. According to the arguments passed to the class, the
+   nodes ran by the class will be a _master node_ or a _slave
+   node_. __One can create a real distributed systems by running several
+   instances of these classes on several computers__.
+3. [_Test_](https://github.com/badock/HelloAkka/blob/master/src/main/java/distributed/simple/Test.java): this class runs several instances of the _Main_ class
+   on a same computer : one master node and several _slaves_. __This
+   class is usefull for testing locally if the distributed system
+   behaves correctly__.
+   
+
+One can run the _Main_ class on several computers to create distributed application. First, launch a server on a first computer (let say it has the __192.168.1.3_ ip address) that will use the 8000 port:
+```
+mvn exec:java -Dexec.mainClass=distributed.Main -Dexec.args="server 0.0.0.0 8000"
+```
+
+now, on an other computer, run a slave node that will also use port
+8000, and provide some arguments that will enable him to contact the
+master node:
+
+```
+mvn exec:java -Dexec.mainClass=distributed.Main -Dexec.args="client 8000 192.168.1.3"
+```
+
+If you are interested in how this process of bootstraping the
+distributed system works, you may take a look at the code located
+[here](https://github.com/badock/HelloAkka/blob/master/src/main/java/distributed/simple/Main.java#L48).
+
+__Examples in other sections will reuse the same class structure.__
+
 ##### topology.txt : how to debug your distributed system ? (local execution only)
 
 ## Next step: Towards a Ring topology
