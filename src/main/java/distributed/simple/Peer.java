@@ -38,12 +38,8 @@ public class Peer extends AbstractActor {
     public void debug() {
         String msg = "";
         ArrayList<String> identifiers = new ArrayList<String>();
-//        ActorRef selfRef = self();
-
-//        String myAddress = self().path().name()+"@"+self().path().address().host().get()+":"+self().path().address().port().get();
 
         for (ActorRef ref : this.peers) {
-//            String identifier = ref.path().name()+"@"+ref.path().address().host().get()+":"+ref.path().address().port().get();
             identifiers.add(ref.path().name());
         }
 
