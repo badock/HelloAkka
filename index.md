@@ -32,9 +32,8 @@ order: 1
 - Session 0: Developping with Akka: getting started
 - Session 1: Akka, an implementation of the actor model
 - Session 2: Developing a simple master/slave application
-- Session 4: Towards a Ring topology
-- Session 4: Implementing a Chord like topology
-- Session 5: Running an application on Grid'5000
+- Session 3: Toward a distributed application based on Chord
+- Session 4: Running an application on Grid'5000
 
 ### Contact
 

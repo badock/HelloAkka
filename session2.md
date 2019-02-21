@@ -185,9 +185,21 @@ If you are interested in how this process of bootstraping the
 distributed system works, you may take a look at the code located
 [here](https://github.com/badock/HelloAkka/blob/master/src/main/java/distributed/simple/Main.java#L48).
 
-__Examples in other sections will reuse the same class structure.__
+___Examples in other sections will reuse the same class structure.___
 
 ##### topology.txt : how to debug your distributed system ? (local execution only)
+
+If you run the _Test_ class provided by the code hosted on Github, you
+should notice that a file __topology.txt__ have appeared. The file is
+a _Graphviz_ produced by the
+[debug](https://github.com/badock/HelloAkka/blob/master/src/main/java/distributed/simple/Peer.java#L38)
+function, which is executed periodically by each peer of the system.
+
+While you are running an example, you can view how your distributed infrastructure looks like by inserting its content in Graphviz or by using a web app such as [this one](https://dreampuf.github.io/GraphvizOnline):
+
+![/assets/img/session2/graphviz.png](/assets/img/session2/graphviz.png)
+
+
 
 ## Next step: Towards a Ring topology
 
