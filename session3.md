@@ -36,6 +36,41 @@ sucessors and predecessors.
 
 ![/assets/img/session3/ring.png](/assets/img/session3/ring.png)
 
+To ensure that our topology will always be a ring, we define a
+_stabilize_ function that will periodically ensure that IDs of peers
+are ordered. We naively define the _stabilize_ function of peer with
+_n_ ID, in the following pseudo-code:
+
+```lua
+function n.stabilize()
+    x = n.successor.predecessor
+    if n.id included_in [x.id, n.successor.id] then
+        -- 'n' learned that 'x' exists
+        n.update_neighbors(x)
+        -- other nodes should learn that 'n' exists
+        x.update_neighbors(n)
+        n.successor.update_neighbors(n)
+    end
+end
+```
+
+In the previous snippet, the _update_neighbors_ function is in charge
+of checking if a given peer is more relevant than existing predecessor
+and successor of the peer with _n_ ID. We can define it as follow:
+
+```lua
+function n.update_neighbors(x)
+    if x.id included_in [n.predecessor.id, n.id] then
+        n.predecessor = x
+    end
+    if x.id included_in [n.id, n.successor.id] then
+        n.successor = x
+    end
+end
+```
+
+With these two functions, we are able to build a ring topology, in
+which peers will find their place.
 
 ### II- _"Ask pattern"_ in Akka : answer and response between two actors
 
@@ -124,9 +159,52 @@ FutureConverters.toJava(futureResponse).thenApplyAsync(responseObj -> {
 }, ex);
 ```
 
-
+The code show in this Section can be found on this [Github
+repository](https://github.com/badock/HelloAkka/tree/master/src/main/java/examples/session3). To
+test it, just run the
+[Main](https://github.com/badock/HelloAkka/blob/master/src/main/java/examples/session3/Main.java)
+class.
 
 ### III- Building a Ring
+
+As seen in [section I](#i--considerations-on-what-is-a-ring-of-peers),
+we can maintain a ring structure if periodically we check that each
+peer of the topology is at its correct place. We have proposed an
+algorith that implements such a mechanism. You can find the code of
+this Section on this [Github
+repository](https://github.com/badock/HelloAkka/tree/master/src/main/java/distributed/ring).
+
+First, we give an implementation of the __stabilize__ function that
+levarages the _Ask pattern_ provided by Akka:
+
+```java
+public void stabilize() {
+    ActorRefWithId successor = neighbours.getSuccessor();
+    if (successor != null) {
+        // Get an execution context for executing the future
+        final Executor ex = this.getContext().getSystem().dispatcher();
+        // Get a future that will resolve to the response of 'sucessor'
+        Future<Object> futureX = ask(successor.ref, new GetPredecessor(), this.timeout);
+        // Process the future asynchronously
+        FutureConverters.toJava(futureX).thenApplyAsync(op -> {
+            // Cast the response (Java Object) to an ActorRefWithId
+            ActorRefWithId xRef = (ActorRefWithId) op;
+            // Check if current node is between 'x' and 'successor'
+            if (Utils.isInCircularInterval(xRef.Id, selfRef.Id, successor.Id, false, false)) {
+                // Current node may not know 'predecessorCandidateRef'
+                this.neighbours.updateIfRelevant(xRef);
+                // Other nodes may not know me
+                successor.ref.tell(new Notify(this.selfRef), this.self());
+                xRef.ref.tell(new Notify(this.selfRef), this.self());
+            }
+            return true;
+        }, ex);
+    }
+}
+```
+
+Each 
+
 
 ### IV- Implementing a Chord like topology
 
