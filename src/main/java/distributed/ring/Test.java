@@ -16,7 +16,7 @@ public class Test {
         Main.server(server_args);
 
         // Create few clients
-        int nbClients = 25;
+        int nbClients = 30;
         for(int i=1; i<nbClients+1; i++) {
             int client_port = server_port + i;
             String[] client_args = new String[]{"client", "127.0.0.1", Integer.toString(client_port), "127.0.0.1", Integer.toString(server_port)};
