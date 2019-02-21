@@ -1,22 +1,19 @@
-package distributed.ring.fingers;
+package distributed.ring.neighbours;
 
 import distributed.utils.ActorRefWithId;
 import distributed.utils.Utils;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-
 /**
  * Created by jonathan on 12/1/18.
  */
-public class KnowledgeTable {
+public class Neighbourhood {
 
     private ActorRefWithId selfRef;
     private ActorRefWithId predecessor;
     private ActorRefWithId successor;
 
 
-    public KnowledgeTable(ActorRefWithId selfRef) {
+    public Neighbourhood(ActorRefWithId selfRef) {
         // Init attributes
         this.selfRef = selfRef;
         this.predecessor = selfRef;

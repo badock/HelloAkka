@@ -7,8 +7,6 @@ import akka.actor.ActorSystem;
  */
 public class GettingStarted {
 
-
-
     public static void main(String args[]) {
 
         final ActorSystem system = ActorSystem.create("hello_akka");
